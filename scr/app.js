@@ -10,17 +10,24 @@ app.use(cors());
 wss.on('connection', (ws) => {
   console.log('Cliente conectado');
   
-  // Cuando se recibe un mensaje de cualquier cliente
-  ws.on('message', (message) => {
-    console.log('Recibido:', message);
+
+  wss.on('connection', (ws) => {
+    console.log('Cliente conectado');
     
-    // Reenviar el mensaje a todos los clientes conectados
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(message);
-      }
+    ws.on('message', (message) => {
+  
+      const messageAsString = message.toString();
+      console.log('Recibido:', messageAsString);
+      
+    
+      wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(messageAsString);
+        }
+      });
     });
   });
+  
 });
 
 const port = process.env.PORT || 3001;
