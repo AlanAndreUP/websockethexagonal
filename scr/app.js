@@ -5,7 +5,8 @@ const http = require('http');
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-
+const cors = require('cors');
+app.use(cors());
 wss.on('connection', (ws) => {
   console.log('Cliente conectado');
   
